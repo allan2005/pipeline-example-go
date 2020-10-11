@@ -15,7 +15,10 @@ stages:
       dockerfilePath: ./Dockerfile
       buildContext: .
       tag: example-helloserver:${CICD_EXECUTION_SEQUENCE}
+      pushRemote: true
+      registry: https://ap-southeast-1.console.aws.amazon.com/ecr/repositories?region=ap-southeast-1
 - name: Deploy
   steps:
   - applyYamlConfig:
       path: ./deployment.yaml
+notification: {}
