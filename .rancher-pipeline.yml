@@ -16,7 +16,7 @@ stages:
       buildContext: .
       tag: example-helloserver:${CICD_EXECUTION_SEQUENCE}
       pushRemote: true
-      registry: https://ap-southeast-1.console.aws.amazon.com/ecr/repositories?region=ap-southeast-1
+      registry: 699364278194.dkr.ecr.ap-southeast-1.amazonaws.com
 - name: Deploy
   steps:
   - applyYamlConfig:
