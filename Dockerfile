@@ -1,4 +1,2 @@
-FROM golang:1.11
-EXPOSE 80
-COPY ./bin/hello-server /usr/local/bin/
-CMD ["hello-server"]
+FROM nginx
+RUN echo '这是一个本地构建的nginx镜像' > /usr/share/nginx/html/index.html
