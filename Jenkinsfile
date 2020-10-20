@@ -3,7 +3,7 @@ pipeline{
 		stages {
 			stage('clone'){
 				steps{
-					git credentialsId: 'd546fc29-4399-40e5-95a5-aeaf5ec8cdbb', url: 'https://github.com/allan2005/jenkins-new-pub'
+					git credentialsId: 'd546fc29-4399-40e5-95a5-aeaf5ec8cdbb', url: 'https://github.com/allan2005/pipeline-example-go'
 					script {
             build_tag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
             repo_name = '699364278194.dkr.ecr.ap-southeast-1.amazonaws.com'
