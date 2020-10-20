@@ -3,7 +3,7 @@ pipeline{
 		stages {
 			stage('clone'){
 				steps{
-					git credentialsId: 'd546fc29-4399-40e5-95a5-aeaf5ec8cdbb', url: 'https://github.com/allan2005/jenkins-new-pub'
+					git credentialsId: 'd546fc29-4399-40e5-95a5-aeaf5ec8cdbb', url: 'https://github.com/allan2005/pipeline-example-go'
 					script {
             build_tag = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
             repo_name = '699364278194.dkr.ecr.ap-southeast-1.amazonaws.com'
@@ -20,8 +20,8 @@ pipeline{
 			stage('push'){
 				steps{
 					echo "3.Push Docker Image Stage"
-					withDockerRegistry(credentialsId:'ecr:ap-southeast-1:0b248182-049b-4ff5-8a99-e29441e5ab23', url: 'https://699364278194.dkr.ecr.ap-southeast-1.amazonaws.com') {
-						sh "docker push ${repo_name}/${app_name}:${build_tag}"
+					aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin 699364278194.dkr.ecr.ap-southeast-1.amazonaws.com
+					sh "docker push ${repo_name}/${app_name}:${build_tag}"
 				}
 			}	
 		}
