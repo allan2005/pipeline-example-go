@@ -19,7 +19,7 @@ pipeline{
 			}									
 			stage('push'){
 				steps{
-					echo "3.Push Docker Image Stage"
+					echo "4.Push Docker Image Stage"
 					aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin 699364278194.dkr.ecr.ap-southeast-1.amazonaws.com
 					sh "docker push ${repo_name}/${app_name}:${build_tag}"
 				}
