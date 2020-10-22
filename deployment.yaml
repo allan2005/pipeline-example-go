@@ -1,36 +1,42 @@
-kind: Service
-apiVersion: v1
-metadata:
-  name: helloserver-service
-spec:
-  selector:
-    app: helloserver
-  type: NodePort
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 80
----
-apiVersion: apps/v1
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: example-helloserver
-  labels:
-    app: helloserver
+  name: nginx
+  namespace: default
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: helloserver
   template:
     metadata:
       labels:
-        app: helloserver
+        app: nginx
     spec:
-      imagePullSecrets:
-      - name: pipeline-docker-registry
+      terminationGracePeriodSeconds: 10
       containers:
-      - name: helloserver
-        image: ${CICD_IMAGE}:${CICD_EXECUTION_SEQUENCE}
+      - name: nginx
+        image: 699364278194.dkr.ecr.ap-southeast-1.amazonaws.com/jenkins-demo:eadd46c
+        imagePullPolicy: Always
         ports:
+        - containerPort: 443
+          name: web
+          protocol: TCP
         - containerPort: 80
+          name: agent
+          protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+  namespace: default
+  labels:
+    app: nginx
+spec:
+  selector:
+    app: nginx
+  type: NodePort
+  ports:
+  - name: web
+    port: 80
+    targetPort: web
+  - name: agent
+    port: 443
+    targetPort: agent
