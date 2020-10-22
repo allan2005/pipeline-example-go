@@ -5,7 +5,7 @@ metadata:
   labels:
     app: nginx
 spec: #spec部分是该Deployment的规则说明
-  replicas: 3 #relicas指定副本数量，默认为1
+  replicas: 1 #relicas指定副本数量，默认为1
   selector:
     matchLabels:
       app: nginx
