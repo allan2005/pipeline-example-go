@@ -1,42 +1,21 @@
-apiVersion: extensions/v1beta1
-kind: Deployment
+apiVersion: apps/v1 #apiVersion是当前配置格式的版本
+kind: Deployment #kind是要创建的资源类型，这里是Deploymnet
 metadata:
-  name: nginx
-  namespace: default
-spec:
-  template:
-    metadata:
-      labels:
-        app: nginx
-    spec:
-      terminationGracePeriodSeconds: 10
-      containers:
-      - name: nginx
-        image: 699364278194.dkr.ecr.ap-southeast-1.amazonaws.com/jenkins-demo:eadd46c
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 443
-          name: web
-          protocol: TCP
-        - containerPort: 80
-          name: agent
-          protocol: TCP
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: nginx
-  namespace: default
+  name: nginx-deployment
   labels:
     app: nginx
-spec:
+spec: #spec部分是该Deployment的规则说明
+  replicas: 3 #relicas指定副本数量，默认为1
   selector:
-    app: nginx
-  type: NodePort
-  ports:
-  - name: web
-    port: 80
-    targetPort: web
-  - name: agent
-    port: 443
-    targetPort: agent
+    matchLabels:
+      app: nginx
+  template: #template定义Pod的模板，这是配置的重要部分
+    metadata: #metadata定义Pod的元数据，至少要顶一个label，label的key和value可以任意指定
+      labels:
+        app: nginx
+    spec: #spec描述的是Pod的规则，此部分定义pod中每一个容器的属性，name和image是必需的
+      containers:
+      - name: nginx
+        image: nginx:1.15.4
+        ports:
+        - containerPort: 80
