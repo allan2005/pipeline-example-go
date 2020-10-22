@@ -5,7 +5,7 @@ metadata:
   labels:
     app: nginx
 spec: #spec部分是该Deployment的规则说明
-  replicas: 1 #relicas指定副本数量，默认为1
+  replicas: 3 #relicas指定副本数量，默认为1
   selector:
     matchLabels:
       app: nginx
@@ -16,6 +16,6 @@ spec: #spec部分是该Deployment的规则说明
     spec: #spec描述的是Pod的规则，此部分定义pod中每一个容器的属性，name和image是必需的
       containers:
       - name: nginx
-        image: nginx:1.15.4
+        image: 699364278194.dkr.ecr.ap-southeast-1.amazonaws.com/jenkins-demo:39fd801
         ports:
         - containerPort: 80
