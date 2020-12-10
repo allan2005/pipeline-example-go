@@ -1,0 +1,66 @@
+# deploy-java-app.yaml
+# Just copy the file to your source code to take effect, <artifactId> will extract from pom.xlm by Jenkins scripts
+# Author: Sui Huafeng 2020/11/11
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: <artifactId>  # Using artifactId in POX.xml as POD name by default, do NOT modify unless necessary.
+  labels:
+    app: <artifactId>
+spec:
+  replicas: 2  # Do NOT modify unless necessary.
+  selector:
+    matchLabels:
+      app: <artifactId>
+  template:
+    metadata:
+      labels:
+        app: <artifactId>
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - <artifactId>
+              topologyKey: topology.kubernetes.io/zone  # Ensure pods distributed in different AZ
+            weight: 100
+      containers:
+      - name: <artifactId>
+        image: <ecr>/<artifactId>/<repository>:<version>-<gitverion>
+        imagePullPolicy: IfNotPresent
+        env:  # Change me if required
+        - name: PARAMS
+          value: --spring.datasource.url=jdbc:mysql://aosom-dev.cluster-cc5u4fjfafro.eu-west-1.rds.amazonaws.com:3306/xxl_job?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
+            --spring.datasource.password=Fk3TThShDMke4rYQq1AD
+        ports:  # Optional and just informational.
+        - containerPort: 8081
+        readinessProbe:  # Change me if required
+          exec:
+            command: ["/bin/grpc_health_probe", "-addr=:6412"]
+          initialDelaySeconds: 5
+        livenessProbe:  # Change me if required
+          exec:
+            command: ["/bin/grpc_health_probe", "-addr=:6412"]
+          initialDelaySeconds: 10
+        resources:   # Change me if required
+          limits:
+            cpu: 1500m
+            memory: 10000Mi
+          requests:
+            cpu: 300m
+            memory: 2000Mi
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 60
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  minReadySeconds: 1800  # Seconds between PODs rollingUpdate
+  progressDeadlineSeconds: 3000

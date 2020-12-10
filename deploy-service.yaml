@@ -1,0 +1,16 @@
+# deploy-service.yaml
+# Just copy the file to your source code to take effect, <artifactId> will extract from pom.xlm by Jenkins scripts
+# Author: Sui Huafeng 2020/11/11
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: <artifactId>  # Using artifactId in POX.xml as POD name by default, do NOT modify unless necessary.
+spec:
+  ports:
+    - port: 80
+      targetPort: 8081
+      protocol: TCP
+  sessionAffinity: ClientIP
+  selector:
+    app: <artifactId>

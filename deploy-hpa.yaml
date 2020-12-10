@@ -1,0 +1,36 @@
+# deploy-hpa.yaml
+# Auto scale YOUR POD from 2 to 10 if CPU is above 80%
+# Just copy the file to your source code to take effect, <artifactId> will be replaced by Jenkins scripts
+# Author: Sui Huafeng 2020/11/11
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: <artifactId>  # Do NOT modify unless necessary.
+spec:
+  maxReplicas: 10  # Change me as your desired
+  minReplicas: 2   # Do NOT change unless necessary
+  scaleTargetRef:
+    apiVersion: apps/v1beta1
+    kind: Deployment
+    name: <artifactId>
+  metrics:
+  - type: Resource  # Other resource is been supported and need test if necessary
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 80 # Change me as your desired
+  behavior:  #  Support since Kubernetes 1.18
+    scaleDown:
+      stabilizationWindowSeconds: 1200 # Slowly scale down after 20 min. Change me as your desired
+      policies:
+      - type: Pods
+        value: 1
+        periodSeconds: 120
+    scaleUp:
+      stabilizationWindowSeconds: 0  # Immediately scale up
+      policies:
+      - type: Pods
+        value: 2
+        periodSeconds: 30
