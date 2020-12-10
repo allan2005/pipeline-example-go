@@ -9,9 +9,7 @@ This is a sample golang project to demonstrate the integration with rancher pipe
 ## Running
 
 `./bin/hello-server`
-
 # License
-
 Copyright (c) 2014-2018 [Rancher Labs, Inc.](http://rancher.com)
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,4 +23,5 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+
 
