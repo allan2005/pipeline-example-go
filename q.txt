@@ -1,0 +1,11 @@
+2020长城全球智能网联平台projectPlan1130.docx。
+长城汽车大数据迁移项目
+encryptanddecrypt1
+
+vm.max_map_count [65530] is too low, increase to at least [262144]
+ 
+bootstrap check fail
+
+
+system.setproperty
+
